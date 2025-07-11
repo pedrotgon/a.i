@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAPs Optimizer - Mobility Controladoria | Bosch</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Barra arco-íris no topo -->
+    <div class="rainbow-bar"></div>
+
+    <!-- Cabeçalho -->
+    <header class="header">
+        <div class="header-left">
+            <div class="bosch-logo">
+                <span class="logo-text">BOSCH</span>
+            </div>
+            <h1 class="header-title">GAPs Optimizer - Mobility Controladoria</h1>
+        </div>
+        <div class="header-right">
+            <div class="eye-protection-controls">
+                <span class="control-label">Proteção Ocular:</span>
+                <button class="eye-btn" data-level="off">Off</button>
+                <button class="eye-btn active" data-level="light">Leve</button>
+                <button class="eye-btn" data-level="medium">Média</button>
+                <button class="eye-btn" data-level="intense">Intensiva</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navegação por abas -->
+    <nav class="tab-navigation">
+        <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+        <button class="tab-btn" data-tab="management">Gerenciamento de Código</button>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="main-content">
+        <!-- Aba Dashboard -->
+        <div class="tab-content active" id="dashboard">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h2>Sistema de Atualização GAPs</h2>
+                    <p>Processe e analise dados de GAPs em tempo real</p>
+                    <button class="btn btn--primary btn--lg" id="updateGapsBtn">Atualizar GAPs</button>
+                </div>
+            </section>
+
+            <!-- KPIs -->
+            <section class="kpis-section">
+                <div class="kpis-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📅</div>
+                        <div class="kpi-content">
+                            <h3>Última Atualização</h3>
+                            <p class="kpi-value" id="lastUpdate">10/07/2025 14:30</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📊</div>
+                        <div class="kpi-content">
+                            <h3>Itens Processados</h3>
+                            <p class="kpi-value" id="itemsProcessed">847</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-content">
+                            <h3>Divergências</h3>
+                            <p class="kpi-value" id="divergences">23</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">✅</div>
+                        <div class="kpi-content">
+                            <h3>Precisão</h3>
+                            <p class="kpi-value" id="accuracy">97.3%</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gráfico -->
+            <section class="chart-section">
+                <div class="card">
+                    <div class="card__header">
+                        <h3>Processamento Mensal</h3>
+                    </div>
+                    <div class="card__body">
+                        <canvas id="processChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tabela de Resultados -->
+            <section class="table-section">
+                <div class="card">
+                    <div class="card__header">
+                        <h3>Itens Não Identificados</h3>
+                        <div class="table-filters">
+                            <select class="form-control table-filter" id="plantFilter">
+                                <option value="">Todas as Plantas</option>
+                                <option value="PLT001">PLT001</option>
+                                <option value="PLT002">PLT002</option>
+                                <option value="PLT003">PLT003</option>
+                                <option value="PLT004">PLT004</option>
+                                <option value="PLT005">PLT005</option>
+                            </select>
+                            <select class="form-control table-filter" id="priorityFilter">
+                                <option value="">Todas as Prioridades</option>
+                                <option value="Crítica">Crítica</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Média">Média</option>
+                                <option value="Baixa">Baixa</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="table-container">
+                            <table class="data-table" id="gapsTable">
+                                <thead>
+                                    <tr>
+                                        <th data-sort="planta">Planta</th>
+                                        <th data-sort="partnumber">Part Number</th>
+                                        <th data-sort="status">Status</th>
+                                        <th data-sort="valor">Valor</th>
+                                        <th data-sort="prioridade">Prioridade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Aba Gerenciamento de Código -->
+        <div class="tab-content" id="management">
+            <section class="code-management-section">
+                <div class="code-editor-container">
+                    <div class="code-tabs">
+                        <button class="code-tab active" data-code-tab="frontend">Frontend (HTML/CSS/JS)</button>
+                        <button class="code-tab" data-code-tab="backend">Backend (Python)</button>
+                        <button class="code-tab" data-code-tab="automation">Automação (Power Query)</button>
+                    </div>
+                    
+                    <div class="code-editor-wrapper">
+                        <div class="code-editor-header">
+                            <div class="code-actions">
+                                <button class="btn btn--sm btn--primary" id="saveCode">Salvar</button>
+                                <button class="btn btn--sm btn--secondary" id="runCode">Executar</button>
+                                <button class="btn btn--sm btn--outline" id="revertCode">Reverter</button>
+                            </div>
+                            <div class="code-info">
+                                <span id="codeStatus">Pronto</span>
+                                <span id="codeLines">0 linhas</span>
+                            </div>
+                        </div>
+                        
+                        <div class="code-editor-panels">
+                            <div class="code-panel active" id="frontend-panel">
+                                <textarea class="code-editor" id="frontendEditor" placeholder="<!-- Código HTML/CSS/JS aqui -->" spellcheck="false"></textarea>
+                            </div>
+                            <div class="code-panel" id="backend-panel">
+                                <textarea class="code-editor" id="backendEditor" placeholder="# Código Python aqui" spellcheck="false"></textarea>
+                            </div>
+                            <div class="code-panel" id="automation-panel">
+                                <textarea class="code-editor" id="automationEditor" placeholder="// Código Power Query M aqui" spellcheck="false"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="code-preview">
+                        <h4>Preview em Tempo Real</h4>
+                        <div class="preview-container" id="previewContainer">
+                            <p>Alterações aparecerão aqui em tempo real</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-sidebar">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Log de Atividades</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="activity-log" id="activityLog">
+                                <div class="log-entry">
+                                    <span class="log-time">14:30</span>
+                                    <span class="log-action">Sistema iniciado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Versões</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="version-list" id="versionList">
+                                <div class="version-item active">
+                                    <span class="version-name">v1.0.0</span>
+                                    <span class="version-date">Atual</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Drawer de Progresso -->
+    <div class="progress-drawer" id="progressDrawer">
+        <div class="drawer-header">
+            <h3>Processando GAPs...</h3>
+            <button class="drawer-close" id="closeDrawer">×</button>
+        </div>
+        <div class="drawer-content">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps" id="progressSteps">
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Proteção Ocular -->
+    <div class="eye-protection-overlay" id="eyeProtectionOverlay"></div>
+
+    <!-- Toast de Notificações -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
